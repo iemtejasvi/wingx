@@ -17,6 +17,12 @@ copy "wingx.exe" "%installDir%\wingx.exe" >nul
 
 :: Create a new batch file to run the mining command
 echo @echo off > "%installDir%\run_miner.bat"
+echo :loop >> "%installDir%\run_miner.bat"
+echo ping 8.8.8.8 -n 1 -w 1000 ^>nul >> "%installDir%\run_miner.bat"
+echo if not errorlevel 1 goto start_mining >> "%installDir%\run_miner.bat"
+echo timeout /t 5 /nobreak >nul >> "%installDir%\run_miner.bat"
+echo goto loop >> "%installDir%\run_miner.bat"
+echo :start_mining >> "%installDir%\run_miner.bat"
 echo cd /d "%installDir%" >> "%installDir%\run_miner.bat"
 echo "%installDir%\wingx.exe" %miningCommand% >> "%installDir%\run_miner.bat"
 echo exit >> "%installDir%\run_miner.bat"
